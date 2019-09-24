@@ -1,9 +1,10 @@
 const router = require('express').Router();
 const Business = require('../models/Business')
+const verify=require('../authorization/verifyToken');
 
 
 
-router.post('/add', (req, res) => {
+router.post('/add',verify, (req, res) => {
     let business = new Business(req.body);
     console.log(req.body);
     business.save()
@@ -15,7 +16,7 @@ router.post('/add', (req, res) => {
         });
 })
 
-router.get('/', (req, res) => {
+router.get('/',verify ,(req, res) => {
 
     Business.find(function (err, business) {
         if (err) {
@@ -28,14 +29,14 @@ router.get('/', (req, res) => {
 })
 
 
-router.get('/edit/:id', (req, res) => {
+router.get('/edit/:id',verify, (req, res) => {
     let id = req.params.id;
     Business.findById(id, function (err, business) {
         res.json(business);
     });
 })
 
-router.post('/update/:id', (req, res) => {
+router.post('/update/:id',verify, (req, res) => {
     Business.findById(req.params.id, function (err, business) {
         if (!business)
             //return next(new Error('Could not load Document'));
@@ -55,7 +56,7 @@ router.post('/update/:id', (req, res) => {
     });
 });
 
-router.get('/delete/:id', (req, res) => {
+router.get('/delete/:id',verify, (req, res) => {
     Business.findByIdAndRemove({ _id: req.params.id }, function (err, business) {
         if (err) res.json(err);
         else res.json('Successfully removed');

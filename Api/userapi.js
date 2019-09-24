@@ -126,8 +126,8 @@ router.post('/login', async (req, res) => {
 
     res.header({
         'auth-token': signatureToken,
-        expiresIn: 300
-    }).send({ status: "success", message: "login successful", authToken: signatureToken, expiresIn: 300 });
+        expiresIn: 3600
+    }).send({ email:user.email,name:user.fullName,status: "success", message: "login successful", authToken: signatureToken, expiresIn: 3600 });
 });
 
 module.exports = router;
